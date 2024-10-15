@@ -1,15 +1,11 @@
 import './index.css';
+import Nav from './Nav.js'
 
 function App() {
-  return (
-    <>
-    <div className="bg-zinc-900 text-white inline">
-      hello
-    </div>
-    <h1 className='inline'>Hello</h1>
-    <Try>Hello</Try>
-    </>
-  );
+  return(
+    <Nav/>
+    
+  )
 }
 
 export default App;
