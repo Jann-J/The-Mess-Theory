@@ -16,8 +16,19 @@ const Footer = () => {
                 <div class="flex flex-col items-center">
                 <span class="bg-yellow-300 text-zinc-800 rounded-full p-1">Socials</span>
                     <ul>
+                        <li>
+                     {/*   <span class="[&>svg]:h-5 [&>svg]:w-5">
+  look into this
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    fill="current"
+    viewBox="0 0 320 512">
+  <path
+      d="M80 299.3V512H196V299.3h86.5l18-97.8H196V166.9c0-51.7 20.3-71.5 72.7-71.5c16.3 0 29.4 .4 37 1.2V7.9C291.4 4 256.4 0 236.2 0C129.3 0 80 50.5 80 159.4v42.1H14v97.8H80z" />
+  </svg>
+</span>*/}
+                        </li>
                         <li></li>
-                        <li>{/*X*/}X</li>
                         <li>{/*LinkdIn*/}M</li>
                         <li>{/*xyz*/}X</li>
                     </ul>
