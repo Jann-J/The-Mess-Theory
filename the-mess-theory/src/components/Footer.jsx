@@ -1,5 +1,5 @@
 import React from "react";
-// Initialization for ES Users
+
 export default function Footer () {
     return (
       <div className="px-4 pt-16 mx-auto sm:max-w-xl md:max-w-full lg:max-w-screen-xl md:px-24 lg:px-8  text-zinc-300 bg-zinc-800">
@@ -14,7 +14,7 @@ export default function Footer () {
                 </p>
                 <br />
                 <p className="text-sm"> 
-                    Our platform allows you to manage meal selections, track meal history, and enjoy your time.
+                    Our platform allows you to manage meal selections, track meal history, and enjoy your meal time.
                 </p>
             </div>
           </div>
@@ -64,7 +64,7 @@ export default function Footer () {
             </span>
             <div className="flex items-center mt-1 space-x-3">
               <a
-                href="/"
+                href="https://x.com/?lang=en-in"
                 className=" transition-colors duration-300 hover:text-deep-purple-accent-400"
               >
                 <svg viewBox="0 0 24 24" fill="currentColor" className="h-5">
@@ -72,7 +72,7 @@ export default function Footer () {
                 </svg>
               </a>
               <a
-                href="/"
+                href="https://www.instagram.com/"
                 className="transition-colors duration-300 hover:text-deep-purple-accent-400"
               >
                 <svg viewBox="0 0 30 30" fill="currentColor" className="h-6">
@@ -81,7 +81,7 @@ export default function Footer () {
                 </svg>
               </a>
               <a
-                href="/"
+                href="https://www.facebook.com/"
                 className="transition-colors duration-300 hover:text-deep-purple-accent-400"
               >
                 <svg viewBox="0 0 24 24" fill="currentColor" className="h-5">
@@ -96,21 +96,11 @@ export default function Footer () {
           © {new Date().getFullYear()} The-Mess-Theory. All rights reserved.
           </p>
           <ul className="flex flex-col  text-zinc-300 mb-3 space-y-2 lg:mb-0 sm:space-y-0 sm:space-x-5 sm:flex-row">
-            <li>
-              <a
-                href="/"
-                className="text-sm transition-colors duration-300 hover:text-deep-purple-accent-400"
-              >
+            <li className="text-sm transition-colors duration-300 hover:text-deep-purple-accent-400">
                 Privacy Policy
-              </a>
             </li>
-            <li>
-              <a
-                href="/"
-                className="text-sm transition-colors duration-300 hover:text-deep-purple-accent-400"
-              >
+            <li className="text-sm transition-colors duration-300 hover:text-deep-purple-accent-400">
                 Terms &amp; Conditions
-              </a>
             </li>
           </ul>
         </div>
