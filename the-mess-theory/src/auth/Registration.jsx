@@ -1,24 +1,77 @@
 import React, {useState} from "react";
 import logo from './../asset/bg-black-tmt-logo.png'
 import { Link } from "react-router-dom"
+import axios from "axios";
 
 export default function Register() {
-    const [password, setPassword] = useState("");
-    const [confirmPassword, setConfirmPassword] = useState("");
     const [errorMessage, setErrorMessage] = useState("");
+    const [formData, setFormData] = useState({
+      name: "",
+      mis: "",
+      phone: "",
+      email: "",
+      year: "",
+      password: "",
+      confirmPassword: "",
+    });
 
-    const handleSubmit = (event) => {
-        event.preventDefault(); // Prevent form submission
-
-        if (password !== confirmPassword) {
-            setErrorMessage("Passwords do not match. Please try again.");
-        } else {
-            // Proceed with form submission logic
-            setErrorMessage(""); // Clear error message
-            console.log("Form submitted successfully");
-            //submission logic here
-        }
+    const handleChange = (e) => {
+      const { name, value } = e.target;
+      setFormData((prevData) => ({
+        ...prevData,
+        [name]: value,
+      }));
     };
+
+    //To present form submission
+    const handleSubmit = async (event) => {
+      event.preventDefault();
+
+    // Check if password and confirm password match
+    if (formData.password !== formData.confirmPassword) {
+      setErrorMessage("Passwords do not match. Please try again.");
+      return;
+    }
+
+    if (
+      !formData.name ||
+      !formData.mis ||
+      !formData.phone ||
+      !formData.email ||
+      !formData.year ||
+      !formData.password
+    ) {
+      setErrorMessage("All fields are required.");
+      return;
+    }
+    
+    setErrorMessage("");
+
+    try {
+      // Make a POST request to the backend API using Axios
+      const response = await axios.post("http://localhost:3000/register", formData);
+
+      // Handle success response
+      console.log("Registration successful:", response.data);
+
+
+    //resetting form
+    setFormData({
+      name: "",
+      mis: "",
+      phone: "",
+      email: "",
+      year: "",
+      password: "",
+      confirmPassword: "",
+    });
+
+  } catch (error) {
+    // Handle error response
+    console.error("Error during registration:", error.response?.data || error.message);
+    setErrorMessage("Registration failed. Please try again.");
+  }
+  };
 
     return (
       <>
@@ -37,7 +90,7 @@ export default function Register() {
             
             
           <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-            <form action="#" method="POST" className="space-y-5">
+            <form onSubmit={handleSubmit} className="space-y-5">
             
             <div>
                 <label htmlFor="name" className="block text-sm font-medium leading-6 text-yellow-400">
@@ -48,6 +101,8 @@ export default function Register() {
                     id="name"
                     name="name"
                     type="text"
+                    value={formData.name}
+                    onChange={handleChange}
                     required
                     placeholder=" Enter your name"
                     className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
@@ -62,8 +117,10 @@ export default function Register() {
                 <div className="mt-2">
                   <input
                     id="MIS"
-                    name="MIS"
+                    name="mis"
                     type="number"
+                    value={formData.mis}
+                    onChange={handleChange}
                     required
                     className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                   />
@@ -79,6 +136,8 @@ export default function Register() {
                     id="phone"
                     name="phone"
                     type="tel"
+                    value={formData.phone}
+                    onChange={handleChange}
                     required
                     pattern="^\+91[0-9]{10}$"
                     placeholder=" +91XXXXXXXXXX"
@@ -96,6 +155,8 @@ export default function Register() {
                     id="email"
                     name="email"
                     type="email"
+                    value={formData.email}
+                    onChange={handleChange}
                     required
                     autoComplete="email"
                     pattern=".+@coeptech\.ac\.in"
@@ -112,6 +173,8 @@ export default function Register() {
                   <select
                     id="year"
                     name="year"
+                    value={formData.year}
+                    onChange={handleChange}
                     required
                     className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                   >
@@ -136,10 +199,10 @@ export default function Register() {
                     id="password"
                     name="password"
                     type="password"
+                    value={formData.password}
+                    onChange={handleChange}
                     required
                     autoComplete="current-password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)} // Update password state
                     className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                   />
                 </div>
@@ -154,12 +217,12 @@ export default function Register() {
                 <div className="mt-2">
                   <input
                     id="confirm-password"
-                    name="confirm-password"
+                    name="confirmPassword"
                     type="password"
                     required
                     autoComplete="current-password"
-                    value={confirmPassword}
-                    onChange={(e) => setConfirmPassword(e.target.value)} // Update confirm password state
+                    value={formData.confirmPassword}
+                    onChange={handleChange}
                     className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                   />
                 </div>

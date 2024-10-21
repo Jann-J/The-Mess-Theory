@@ -1,7 +1,7 @@
 // src/Nav.js
 import React, { useState } from 'react';
 import { Link} from 'react-router-dom';
-import logo from './../asset/bg-black-tmt-logo.png'
+import logo from './../asset/bg-grey-tmt-logo.png'
 import profileIcon from './../asset/profile-icon-design-free-vector.jpg'
 const Nav = () => {
 
