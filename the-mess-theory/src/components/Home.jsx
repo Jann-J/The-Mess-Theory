@@ -42,7 +42,7 @@ export default function Home({dayType}){
               } else if (hour >= 12 && hour <= 14) {
                 setMealSlot('lunch');
               } else {
-                setMealSlot(null); // No snacks or dinner on Sunday/holiday
+                setMealSlot('snacks'); // No snacks or dinner on Sunday/holiday
               }
             }
           };
@@ -154,9 +154,9 @@ export default function Home({dayType}){
             {/*HISTORY OPTION*/}
             <p className="mt-10 text-sm text-zinc-300">
               Want to check your Meal History?{' '}
-              <Link to="/history" className="font-semibold leading-6 text-indigo-500 hover:text-indigo-400">
+              <span className="font-semibold leading-6 text-indigo-500 hover:text-indigo-400" onClick={navigate('/history')}>
                 History
-              </Link>
+              </span>
             </p>
 
         </div>

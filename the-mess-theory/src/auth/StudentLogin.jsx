@@ -1,8 +1,19 @@
 import React from "react"
+import { useState } from "react";
 import logo from './../asset/bg-black-tmt-logo.png'
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
+import axios from "axios";
 
 export default function StudentLogin() {
+
+  const [email, setEmail] = useState()
+  const [password, setPassword] = useState()
+  const navigate = useNavigate()
+
+  const handleLogin = (e) => {
+    e.preventDefault()
+  };
+
     return (
       <>
         <div className="flex min-h-screen flex-1 flex-col justify-center px-6 py-12 lg:px-8">
@@ -20,7 +31,7 @@ export default function StudentLogin() {
           </div>
   
           <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-            <form action="#" method="POST" className="space-y-6">
+            <form action="#" method="POST" className="space-y-6" onSubmit={handleLogin}>
               <div>
                 <label htmlFor="email" className="block text-sm font-medium leading-6 text-yellow-400">
                   Email address
@@ -33,6 +44,7 @@ export default function StudentLogin() {
                     required
                     autoComplete="email"
                     className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                    onChange={(e) => setEmail(e.target.value)}
                   />
                 </div>
               </div>
@@ -51,10 +63,13 @@ export default function StudentLogin() {
                     required
                     autoComplete="current-password"
                     className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                    onChange={(e) => setPassword(e.target.value)}
                   />
                 </div>
               </div>
-  
+
+              {/*{errorMessage && <span className="text-red-600">{errorMessage}</span>}*/}
+
               <div>
                 <button
                   type="submit"

@@ -1,77 +1,69 @@
 import React, {useState} from "react";
 import logo from './../asset/bg-black-tmt-logo.png'
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import axios from "axios";
 
 export default function Register() {
-    const [errorMessage, setErrorMessage] = useState("");
-    const [formData, setFormData] = useState({
-      name: "",
-      mis: "",
-      phone: "",
-      email: "",
-      year: "",
-      password: "",
-      confirmPassword: "",
+  const [user, setUser] = useState({
+    name: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
+  });
+
+  const [errorMessage, setErrorMessage] = useState("");
+
+
+  const handleInput = (e) => {
+    console.log(e);
+    let name = e.target.name;
+    let value = e.target.value;
+
+    setUser({
+      ...user,
+      [name]: value,
     });
-
-    const handleChange = (e) => {
-      const { name, value } = e.target;
-      setFormData((prevData) => ({
-        ...prevData,
-        [name]: value,
-      }));
-    };
-
-    //To present form submission
-    const handleSubmit = async (event) => {
-      event.preventDefault();
-
-    // Check if password and confirm password match
-    if (formData.password !== formData.confirmPassword) {
-      setErrorMessage("Passwords do not match. Please try again.");
-      return;
-    }
-
-    if (
-      !formData.name ||
-      !formData.mis ||
-      !formData.phone ||
-      !formData.email ||
-      !formData.year ||
-      !formData.password
-    ) {
-      setErrorMessage("All fields are required.");
-      return;
-    }
-    
-    setErrorMessage("");
-
-    try {
-      // Make a POST request to the backend API using Axios
-      const response = await axios.post("http://localhost:3000/register", formData);
-
-      // Handle success response
-      console.log("Registration successful:", response.data);
-
-
-    //resetting form
-    setFormData({
-      name: "",
-      mis: "",
-      phone: "",
-      email: "",
-      year: "",
-      password: "",
-      confirmPassword: "",
-    });
-
-  } catch (error) {
-    // Handle error response
-    console.error("Error during registration:", error.response?.data || error.message);
-    setErrorMessage("Registration failed. Please try again.");
-  }
   };
+
+  // handle form on submit
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    
+    if (user.password !== user.confirmPassword) {
+      setErrorMessage("Passwords do not match");
+    } else {
+      setErrorMessage("");
+      console.log(user);
+      const userData = {
+        name: user.name,
+        email: user.email,
+        password: user.password,
+      };
+      try {
+        const response = await fetch("http://localhost:4000/api/auth/register", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(userData),
+          credentials: 'include', 
+        });
+        console.log("response data : ", response);
+
+        if (response.ok) {
+          const responseData = await response.json();
+          alert("registration successful");
+          setUser({ name: "", email: "", password: "" });
+          console.log(responseData);
+        } else {
+          console.log("error inside response ", "error");
+        }
+      } catch (error) {
+        console.error("Error", error);
+      }
+    }
+  };
+
 
     return (
       <>
@@ -101,8 +93,8 @@ export default function Register() {
                     id="name"
                     name="name"
                     type="text"
-                    value={formData.name}
-                    onChange={handleChange}
+                    value={user.name}
+                    onChange={handleInput}
                     required
                     placeholder=" Enter your name"
                     className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
@@ -110,42 +102,7 @@ export default function Register() {
                 </div>
               </div>
 
-              <div>
-                <label htmlFor="MIS" className="block text-sm font-medium leading-6 text-yellow-400">
-                  MIS id
-                </label>
-                <div className="mt-2">
-                  <input
-                    id="MIS"
-                    name="mis"
-                    type="number"
-                    value={formData.mis}
-                    onChange={handleChange}
-                    required
-                    className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                  />
-                </div>
-              </div>
-
-              <div>
-                <label htmlFor="MIS" className="block text-sm font-medium leading-6 text-yellow-400">
-                  Phone
-                </label>
-                <div className="mt-2">
-                  <input
-                    id="phone"
-                    name="phone"
-                    type="tel"
-                    value={formData.phone}
-                    onChange={handleChange}
-                    required
-                    pattern="^\+91[0-9]{10}$"
-                    placeholder=" +91XXXXXXXXXX"
-                    className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                  />
-                </div>
-              </div>
-
+              
               <div>
                 <label htmlFor="email" className="block text-sm font-medium leading-6 text-yellow-400">
                   Email address (@coeptech.ac.in)
@@ -155,8 +112,8 @@ export default function Register() {
                     id="email"
                     name="email"
                     type="email"
-                    value={formData.email}
-                    onChange={handleChange}
+                    value={user.email}
+                    onChange={handleInput}
                     required
                     autoComplete="email"
                     pattern=".+@coeptech\.ac\.in"
@@ -165,28 +122,7 @@ export default function Register() {
                 </div>
               </div>
   
-              <div>
-                <label htmlFor="year" className="block text-sm font-medium leading-6 text-yellow-400">
-                  Year
-                </label>
-                <div className="mt-2">
-                  <select
-                    id="year"
-                    name="year"
-                    value={formData.year}
-                    onChange={handleChange}
-                    required
-                    className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                  >
-                    <option value="">Select Year</option>
-                    <option value="FY">FY</option>
-                    <option value="SY">SY</option>
-                    <option value="TY">TY</option>
-                    <option value="BTech">BTech</option>
-                    <option value="MTech">MTech</option>
-                  </select>
-                </div>
-              </div>
+              
 
               <div>
                 <div className="flex items-center justify-between">
@@ -199,8 +135,8 @@ export default function Register() {
                     id="password"
                     name="password"
                     type="password"
-                    value={formData.password}
-                    onChange={handleChange}
+                    value={user.password}
+                    onChange={handleInput}
                     required
                     autoComplete="current-password"
                     className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
@@ -221,8 +157,8 @@ export default function Register() {
                     type="password"
                     required
                     autoComplete="current-password"
-                    value={formData.confirmPassword}
-                    onChange={handleChange}
+                    value={user.confirmPassword}
+                    onChange={handleInput}
                     className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                   />
                 </div>

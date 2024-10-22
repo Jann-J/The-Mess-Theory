@@ -1,8 +1,27 @@
-import React from "react"
+
+import React, { useState, useContext} from "react"
 import logo from './../asset/bg-black-tmt-logo.png'
-import { Link } from "react-router-dom"
+import { Link , useNavigate} from "react-router-dom"
+import { UserContext } from '../UserContext'
 
 export default function AdminLogin() {
+
+  const [errorMessage, setErrorMessage] = useState("");
+  const navigate = useNavigate();
+  const { setUserRole } = useContext(UserContext);
+
+  const handleLogin = (e) => {
+    e.preventDefault();
+    const isAdmin = true;// Replace with actual login validation logic
+
+    if (isAdmin) {
+      setUserRole('admin');
+      navigate('/admin-home');
+    } else {
+      setErrorMessage("Invalid credentials. Please try again.");
+    }
+  };
+
     return (
       <>
         <div className="flex min-h-screen flex-1 flex-col justify-center px-6 py-12 lg:px-8">
@@ -20,7 +39,7 @@ export default function AdminLogin() {
           </div>
   
           <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-            <form action="#" method="POST" className="space-y-6">
+            <form action="#" method="POST" className="space-y-6" onSubmit={handleLogin}>
               <div>
                 <label htmlFor="email" className="block text-sm font-medium leading-6 text-yellow-400">
                   Email address
@@ -54,7 +73,9 @@ export default function AdminLogin() {
                   />
                 </div>
               </div>
-  
+              
+              {errorMessage && <span className="text-red-600">{errorMessage}</span>}
+
               <div>
                 <button
                   type="submit"
