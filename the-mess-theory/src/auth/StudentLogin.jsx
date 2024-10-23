@@ -1,18 +1,60 @@
-import React from "react"
-import { useState } from "react";
+import React, { useState, useEffect } from "react"
 import logo from './../asset/bg-black-tmt-logo.png'
 import { Link, useNavigate } from "react-router-dom"
-import axios from "axios";
 
 export default function StudentLogin() {
+  const [user, setUser] = useState({
+    name: "",
+    password: "",
+  });
+  const navigate = useNavigate();
+  const [errorMessage, setErrorMessage] = useState("");
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-  const [email, setEmail] = useState()
-  const [password, setPassword] = useState()
-  const navigate = useNavigate()
+  const URI = 'http://localhost:4000/api/auth/login';
+  const handleInput = (e) => {
+    let name = e.target.name;
+    let value = e.target.value;
 
-  const handleLogin = (e) => {
-    e.preventDefault()
+    setUser({
+      ...user,
+      [name]: value,
+    });
   };
+
+  ;
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    setErrorMessage("");
+
+    try {
+      const response = await fetch(URI, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(user),
+      });
+
+      console.log(response);
+
+      if (response.ok) {
+        setIsLoggedIn(true);
+        errorMessage("");
+      } else {
+        console.log("invalid credentials", response.message);
+        setErrorMessage(response.message);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    if (isLoggedIn) {
+      navigate("/home");
+    }
+  }, [isLoggedIn, navigate]);
 
     return (
       <>
@@ -43,8 +85,9 @@ export default function StudentLogin() {
                     type="email"
                     required
                     autoComplete="email"
+                    value={user.email}
+                    onChange={handleInput}
                     className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                    onChange={(e) => setEmail(e.target.value)}
                   />
                 </div>
               </div>
@@ -61,9 +104,9 @@ export default function StudentLogin() {
                     name="password"
                     type="password"
                     required
-                    autoComplete="current-password"
+                    value={user.password}
+                    onChange={handleInput}
                     className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                    onChange={(e) => setPassword(e.target.value)}
                   />
                 </div>
               </div>

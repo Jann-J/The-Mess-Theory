@@ -11,9 +11,9 @@ const Nav = () => {
     setIsMenuOpen(!isMenuOpen);
   };
   return (
-    <nav class='bg-zinc-800 flex justify-between items-center pr-4 text-yellow-300 relative'>
+    <nav className='bg-zinc-800 flex justify-between items-center pr-4 text-yellow-300 relative'>
          {/*Website logo*/}
-        <img src={logo} class='h-16' alt='Logo'></img>
+        <img src={logo} className='h-16' alt='Logo'></img>
     
         {/*hamburger logo for small screen, improve this*/}
         <>

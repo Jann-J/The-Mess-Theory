@@ -1,77 +1,81 @@
 import React, {useEffect, useState} from "react";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate, } from "react-router-dom";
 
-export default function Home({dayType}){
+export default function Home(){
     //for now
-    dayType = 'regular'
-    {/* Display current meal options based on time */}
+    const dayType = 'regular' //later take this from admin
+    
     const navigate = useNavigate();
-
     const [currentTime, setCurrentTime] = useState(new Date());
     const [mealSlot, setMealSlot] = useState(null); // Determine current meal slot
     const [cart, setCart] = useState([]); // For storing selected options
     const [selectedItems, setSelectedItems] = useState([]);
 
+    const URI = 'http://localhost:4000/api/auth/home';
+
+    const determineMealSlot = () => {
+      const hour = currentTime.getHours();
+  
+      if (dayType === "regular") {
+        if (hour >= 7 && hour <= 9) {
+          setMealSlot('breakfast');
+        } else if (hour >= 10 && hour <= 13) {
+          setMealSlot('lunch');
+        } else if (hour >= 16 && hour <= 18) {
+          setMealSlot('snacks');
+        } else if (hour >= 19 && hour <= 21) {
+          setMealSlot('dinner');
+        } else {
+          setMealSlot(null);
+        }
+      } else if (dayType === "sunday" || dayType === "holiday") {
+        if (hour >= 7 && hour <= 9) {
+          setMealSlot('breakfast');
+        } else if (hour >= 12 && hour <= 14) {
+          setMealSlot('lunch');
+        } else {
+          setMealSlot('snacks'); // No snacks or dinner on Sunday/holiday
+        }
+      }
+    };
+
     useEffect(() => {
-        const timer = setInterval(() => {
+      const timer = setInterval(() => {
           setCurrentTime(new Date());
-        }, 60000); // Updates current time every minute
-            determineMealSlot(); // Call the smart meal slot function
+      }, 60000); // Updates current time every minute
+  
+      // Call the function to determine meal slot whenever the time changes
+      determineMealSlot();
+  
+      return () => clearInterval(timer); // Clean up the interval on unmount
+    }, [currentTime]); // Recalculate on currentTime change
+  
 
-            return () => clearInterval(timer); // Clean up the interval on unmount
-        }, [currentTime, dayType]); // Recalculate on time or dayType change
-
-        const determineMealSlot = () => {
-            const hour = currentTime.getHours();
+    const handleCheckIn = (mealType) => {
+      console.log(`Checked in for ${mealType}`);
+      // Handle check-in logic here in a better way
+    };
         
-            if (dayType === "regular") {
-              if (hour >= 7 && hour <= 9) {
-                setMealSlot('breakfast');
-              } else if (hour >= 10 && hour <= 13) {
-                setMealSlot('lunch');
-              } else if (hour >= 16 && hour <= 18) {
-                setMealSlot('snacks');
-              } else if (hour >= 19 && hour <= 21) {
-                setMealSlot('dinner');
-              } else {
-                setMealSlot(null);
-              }
-            } else if (dayType === "sunday" || dayType === "holiday") {
-              if (hour >= 7 && hour <= 9) {
-                setMealSlot('breakfast');
-              } else if (hour >= 12 && hour <= 14) {
-                setMealSlot('lunch');
-              } else {
-                setMealSlot('snacks'); // No snacks or dinner on Sunday/holiday
-              }
-            }
-          };
-
-          const handleCheckIn = (mealType) => {
-            console.log(`Checked in for ${mealType}`);
-            // Handle check-in logic here in a better way
-          };
+    const addToCart = (item) => {
+      setCart([...cart, item]);
+    };
         
-          const addToCart = (item) => {
-            setCart([...cart, item]);
-          };
-        
-          const confirmCart = () => {
-            // Handle cart confirmation logic in a better way
-            alert('Cart confirmed');
-          };
+    const confirmCart = () => {
+      // Handle cart confirmation logic in a better way
+      alert('Cart confirmed');
+    };
 
-          // Function to toggle item selection
-            const toggleItem = (item) => {
-            if (selectedItems.includes(item)) {
-                 // If item is already selected, remove it
-                setSelectedItems(selectedItems.filter((selected) => selected !== item));
-                setCart(cart.filter(cartItem => cartItem !== item));
-            } else {
-                // Otherwise, add it to the selection
-                setSelectedItems([...selectedItems, item]);
-                addToCart(item);
-            }
+    // Function to toggle item selection
+    const toggleItem = (item) => {
+    if (selectedItems.includes(item)) {
+      // If item is already selected, remove it
+      setSelectedItems(selectedItems.filter((selected) => selected !== item));
+      setCart(cart.filter(cartItem => cartItem !== item));
+    } else {
+      // Otherwise, add it to the selection
+      setSelectedItems([...selectedItems, item]);
+      addToCart(item);
+    }
   };
 
     return(
@@ -154,11 +158,13 @@ export default function Home({dayType}){
             {/*HISTORY OPTION*/}
             <p className="mt-10 text-sm text-zinc-300">
               Want to check your Meal History?{' '}
-              <span className="font-semibold leading-6 text-indigo-500 hover:text-indigo-400" onClick={navigate('/history')}>
+              <span
+              className="font-semibold leading-6 text-indigo-500 hover:text-indigo-400"
+              onClick={() => navigate('/history')} // Correct usage
+>
                 History
               </span>
             </p>
-
         </div>
         </>
     );

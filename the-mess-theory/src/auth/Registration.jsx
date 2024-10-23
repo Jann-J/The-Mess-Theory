@@ -1,7 +1,6 @@
 import React, {useState} from "react";
 import logo from './../asset/bg-black-tmt-logo.png'
-import { Link, useNavigate } from "react-router-dom"
-import axios from "axios";
+import { Link, useNavigate, } from "react-router-dom"
 
 export default function Register() {
   const [user, setUser] = useState({
@@ -12,7 +11,7 @@ export default function Register() {
   });
 
   const [errorMessage, setErrorMessage] = useState("");
-
+  const navigate = useNavigate();
 
   const handleInput = (e) => {
     console.log(e);
@@ -33,7 +32,6 @@ export default function Register() {
       setErrorMessage("Passwords do not match");
     } else {
       setErrorMessage("");
-      console.log(user);
       const userData = {
         name: user.name,
         email: user.email,
@@ -48,15 +46,15 @@ export default function Register() {
           body: JSON.stringify(userData),
           credentials: 'include', 
         });
-        console.log("response data : ", response);
+        
+        const responseData = await response.json();
 
         if (response.ok) {
-          const responseData = await response.json();
-          alert("registration successful");
-          setUser({ name: "", email: "", password: "" });
-          console.log(responseData);
+          navigate('/student-login')
+          setUser({ name: "", email: "", password: ""});
+          errorMessage("");
         } else {
-          console.log("error inside response ", "error");
+          setErrorMessage(responseData.message || "Registration failed, please try again.");
         }
       } catch (error) {
         console.error("Error", error);

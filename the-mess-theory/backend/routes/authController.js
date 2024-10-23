@@ -40,12 +40,10 @@ export const login = async (req, res) => {
       const userExist = await User.findOne({ email });
   
       if (!userExist) {
-        return res.status(400).json({ message: "Invalid credentials" });
+        return res.status(400).json({ message: "Invalid email" });
       }
   
-      // const user = await bcrypt.compare(password, userExist.password);
-      const isPasswordValid = await userExist.comparePassword(password);
-  
+    const isPasswordValid = await userExist.comparePassword(password);
       if (isPasswordValid) {
         res.status(200).json({
           message: "Login Successful",
@@ -53,9 +51,13 @@ export const login = async (req, res) => {
           userId: userExist._id.toString(),
         });
       } else {
-        res.status(401).json({ message: "Invalid email or passord " });
+        res.status(401).json({ message: "Invalid password " });
       }
     } catch (error) {
       res.status(500).json({ message: "Internal server error" });
     }
   };
+
+  export const home = async (req, res){
+    
+  }
