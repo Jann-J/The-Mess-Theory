@@ -58,6 +58,7 @@ export const login = async (req, res) => {
     }
   };
 
-  export const home = async (req, res){
+  export const studentHome = async (req, res) => {
     
+
   }
