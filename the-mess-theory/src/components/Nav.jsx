@@ -1,6 +1,6 @@
 // src/Nav.js
 import React, { useState } from 'react';
-import { Link} from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import logo from './../asset/bg-grey-tmt-logo.png'
 import profileIcon from './../asset/profile-icon-design-free-vector.jpg'
 const Nav = () => {
@@ -26,10 +26,10 @@ const Nav = () => {
 
           {/* Menu items for larger screens */}
           <ul className='hidden sm:flex space-x-4'>
-            <li>{/*<Link to="/">Home</Link>*/}Home</li>
-            <li>{/*<Link to="/">Home</Link>*/}History</li>
-            <li>{/*<Link to="/">Home</Link>*/}Services</li>
-            <li>{/*<Link to="/">Home</Link>*/}Contact</li>
+            <li><Link to="/home">Home</Link></li>
+            <li><Link to="/history">History</Link></li>
+            <li><Link to="/services">Service</Link></li>
+            <li><Link to="/contact">Contact</Link></li>
           </ul>
 
           {/* Profile icon */}
@@ -38,10 +38,10 @@ const Nav = () => {
           {/* Dropdown menu for hamburger menu */}
           {isMenuOpen && (
             <ul className='absolute left-0 right-0 top-16 w-full bg-zinc-800 text-center flex flex-col space-y-2 sm:hidden'>
-              <li>{/*<Link to="/">Home</Link>*/}</li>
-              <li>{/*<Link to="/">Home</Link>*/}</li>
-              <li>{/*<Link to="/">Home</Link>*/}</li>
-              <li>{/*<Link to="/">Home</Link>*/}</li>
+              <li><Link to="/home">Home</Link></li>
+              <li><Link to="/history">History</Link></li>
+              <li><Link to="/services">Service</Link></li>
+              <li><Link to="/contact">Contact</Link></li>
             </ul>
           )}
           </>
