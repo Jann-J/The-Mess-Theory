@@ -19,9 +19,9 @@ export default function Home() {
     { name: 'Idli Sambar', price: 20 },
   ];
 
-  // Simulate a backend API call to get user data
+  // backend API call
   const fetchUserData = async () => {
-    // Replace this with an actual API call in future
+    // Replace this with an actual API call
     const userData = { name: 'Janhavi', mealHistory: [] };
     setUser(userData);
   };
@@ -33,24 +33,24 @@ export default function Home() {
   const determineMealSlot = () => {
     const hour = currentTime.getHours();
     if (dayType === "regular") {
-      if (hour >= 7 && hour <= 9) {
+      if (hour >= 7 && hour <= 8) {
         setMealSlot('breakfast');
       } else if (hour >= 10 && hour <= 13) {
         setMealSlot('lunch');
-      } else if (hour >= 16 && hour <= 18) {
+      } else if (hour >= 16 && hour <= 17) {
         setMealSlot('snacks');
-      } else if (hour >= 19 && hour <= 21) {
+      } else if (hour >= 19 && hour <= 20) {
         setMealSlot('dinner');
       } else {
-        setMealSlot('snacks');
+        setMealSlot(null);
       }
     } else if (dayType === "sunday" || dayType === "holiday") {
-      if (hour >= 7 && hour <= 9) {
+      if (hour >= 7 && hour <= 8) {
         setMealSlot('breakfast');
-      } else if (hour >= 12 && hour <= 14) {
+      } else if (hour >= 12 && hour <= 13) {
         setMealSlot('lunch');
       } else {
-        setMealSlot('snacks');
+        setMealSlot(null);
       }
     }
   };
@@ -58,11 +58,11 @@ export default function Home() {
   useEffect(() => {
     const timer = setInterval(() => {
       setCurrentTime(new Date());
-    }, 60000); // Updates current time every minute
+    }, 60000);
 
-    determineMealSlot(); // Call the function to determine meal slot whenever the time changes
+    determineMealSlot();
 
-    return () => clearInterval(timer); // Clean up the interval on unmount
+    return () => clearInterval(timer); 
   }, [currentTime]);
 
   const addToCart = (item) => {
@@ -73,10 +73,10 @@ export default function Home() {
 
   const handleSelect = (snack) => {
     if (selectedSnacks.some((s) => s.name === snack.name)) {
-      // Deselect the snack
+      // Deselect
       setSelectedSnacks(selectedSnacks.filter((s) => s.name !== snack.name));
     } else {
-      // Select the snack
+      // Select
       setSelectedSnacks([...selectedSnacks, snack]);
     }
   };
@@ -89,16 +89,15 @@ export default function Home() {
       return;
     }
   
-    // Handle cart confirmation logic using selectedSnacks
     alert(`You have confirmed: ${selectedSnacks.map(item => item.name).join(", ")}. Total: Rps. ${totalCost}`);
     
-    // Here, you'd update the backend with selected snacks details
-    setSelectedSnacks([]); // Clear the selected snacks after confirmation
+    // Here, you'd update the backend
+    setSelectedSnacks([]);
   };
 
   return (
     <>
-      <div className="p-4">
+      <div className="p-4 min-h-screen">
         {/* CLASS FOR MEAL SHOWING */}
         <div className="text-xl font-bold py-2 text-center">
           Hey {user ? user.name : "Guest"}!
@@ -113,31 +112,39 @@ export default function Home() {
             </div>
             <div className="flex flex-row justify-between sm:justify-around  min-mr-4">
             <div className="text-white mr-4">
-                <span className="text-yellow-400 font-bold">On regular <br />
-                 days <br /></span>
-                <ul>
-                  <li className="py-2 font-mono">Breakfast: <br /> 
-                    7am - 9am</li>
-                  <li className="py-2 font-mono">Lunch: <br />
-                    10am - 2pm</li>
-                  <li className="py-2 font-mono">Snacks: <br />
-                  4pm - 6pm</li>
-                  <li className="py-2 font-mono">Dinner: <br />
-                  7pm - 9pm</li>
-                </ul>
-              </div>
-              <div>
-                <span className="text-yellow-400 font-bold">On special days <br /> (Sunday / Holidays)</span>
-                <ul className="text-white">
-                  <li className="py-2 font-mono">Breakfast: <br />
-                     7am - 9am</li>
-                  <li className="py-2 font-mono">Lunch: <br />
-                    12pm - 2pm</li>
-                  <li className="py-2 font-mono">Snacks: <br /> 
-                    NA</li>
-                  <li className="py-2 font-mono">Dinner: <br />
-                  NA</li>
-                </ul>
+            <div className="">
+              <table className="min-w-full border-collapse border-slate-600 border-2">
+                <thead>
+                  <tr>
+                    <th className="border-b-2 border-slate-600 px-4 py-2 text-yellow-400 font-bold">Meal Slot</th>
+                    <th className="border-b-2 border-slate-600 px-4 py-2 text-yellow-400 font-bold">On Regular Days</th>
+                    <th className="border-b-2 border-slate-600 px-4 py-2 text-yellow-400 font-bold">On Special Days (Sunday / Holidays)</th>
+                  </tr>
+                </thead>
+                <tbody className="text-white">
+                  <tr>
+                    <td className=" px-4 py-2 font-mono">Breakfast</td>
+                    <td className=" px-4 py-2 font-mono">7am - 9am</td>
+                    <td className=" px-4 py-2 font-mono">7am - 9am</td>
+                  </tr>
+                  <tr>
+                    <td className=" px-4 py-2 font-mono">Lunch</td>
+                    <td className=" px-4 py-2 font-mono">10am - 2pm</td>
+                    <td className=" px-4 py-2 font-mono">12pm - 2pm</td>
+                  </tr>
+                  <tr>
+                    <td className=" px-4 py-2 font-mono">Snacks</td>
+                    <td className=" px-4 py-2 font-mono">4pm - 6pm</td>
+                    <td className=" px-4 py-2 font-mono">NA</td>
+                  </tr>
+                  <tr>
+                    <td className=" px-4 py-2 font-mono">Dinner</td>
+                    <td className=" px-4 py-2 font-mono">7pm - 9pm</td>
+                    <td className=" px-4 py-2 font-mono">NA</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
               </div>
               </div>
             </div>
@@ -145,11 +152,11 @@ export default function Home() {
   
         {mealSlot && (
           <div>
-            <div className="text-sm py-2 uppercase text-white my-4">
+            <div className="text-sm py-2 uppercase text-white my-4 text-center">
               it's {mealSlot} TIME:
   
               {(mealSlot === "snacks" || mealSlot === "breakfast") && (
-                <div className="flex flex-col my-4">
+                <div className="flex flex-col justify-center my-4">
                   <table className="table-auto text-left">
                     <thead>
                       <tr>
@@ -180,20 +187,23 @@ export default function Home() {
                   </div>
   
                   {/* Confirm Button */}
+                  <div>
                   <button
                     onClick={confirmCart}
-                    className="max-w-fit my-2 rounded-md bg-yellow-400 px-3 py-1.5 text-sm font-semibold leading-6 text-black shadow-sm hover:bg-yellow-600"
+                    className=" max-w-fit my-2 rounded-md bg-yellow-400 px-3 py-1.5 text-sm font-semibold leading-6 text-black shadow-sm hover:bg-yellow-600"
                   >
                     Confirm Cart
                   </button>
+                  </div>
                 </div>
               )}
   
               {(mealSlot === "lunch" || mealSlot === "dinner") && (
-                <div>
+                <div className="flex justify-center">
                   <button
                     onClick={confirmCart}
                     className="max-w-fit my-2 rounded-md bg-yellow-400 px-3 py-1.5 text-sm font-semibold leading-6 text-black shadow-sm hover:bg-yellow-600"
+                    
                   >
                     Confirm Meal
                   </button>
@@ -207,7 +217,7 @@ export default function Home() {
         <p className="mt-10 text-sm text-zinc-300">
           Want to check your Meal History?{" "}
           <span
-            className="font-semibold leading-6 text-indigo-500 hover:text-indigo-400"
+            className="font-semibold leading-6 text-indigo-500 hover:text-indigo-400 cursor-pointer"
             onClick={() => navigate("/history")}
           >
             History
